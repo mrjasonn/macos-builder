@@ -515,7 +515,7 @@ jobs:
       if: inputs.build-m1
       uses: actions/download-artifact@v4
       with:
-        name: angle-macos-latest-11.0-arm64
+        name: angle-macos-latest-12.0-arm64
         path: "m1-artifacts"
     - name: download m1 openssl
       if: inputs.build-m1
