@@ -75,7 +75,7 @@ jobs:
       with:
         path: libcxx32-build
         key: ${{ runner.os }}-build-${{ env.cache-name }}
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v4
       if: steps.libcxx32-llvm.outputs.cache-hit != 'true'
       with:
         repository: phracker/MacOSX-SDKs
@@ -109,7 +109,7 @@ jobs:
       with:
         path: libcxx64-build
         key: ${{ runner.os }}-build-${{ env.cache-name }}
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v4
       if: steps.libcxx64-llvm.outputs.cache-hit != 'true'
       with:
         repository: phracker/MacOSX-SDKs
@@ -201,7 +201,7 @@ jobs:
         path: MacOSX10.14.sdk
       env:
         HAVE_SECRET: ${{ secrets.MacOSX1014sdk && '1' || '' }}
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v4
       if: env.MISSING_SECRET && steps.cache-openssl32.outputs.cache-hit != 'true'
       with:
         repository: phracker/MacOSX-SDKs
@@ -250,7 +250,7 @@ jobs:
         path: MacOSX10.14.sdk
       env:
         HAVE_SECRET: ${{ secrets.MacOSX1014sdk && '1' || '' }}
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v4
       if: env.MISSING_SECRET && steps.cache-openssl64.outputs.cache-hit != 'true'
       with:
         repository: phracker/MacOSX-SDKs
@@ -382,7 +382,7 @@ jobs:
         path: MacOSX10.14.sdk
       env:
         HAVE_SECRET: ${{ secrets.MacOSX1014sdk && '1' || '' }}
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v4
       if: env.MISSING_SECRET && steps.cache.outputs.cache-hit != 'true'
       with:
         repository: phracker/MacOSX-SDKs
@@ -630,7 +630,7 @@ jobs:
         path: MacOSX10.14.sdk
       env:
         HAVE_SECRET: ${{ secrets.MacOSX1014sdk && '1' || '' }}
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v4
       if: env.MISSING_SECRET
       with:
         repository: phracker/MacOSX-SDKs
