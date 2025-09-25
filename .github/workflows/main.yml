@@ -645,6 +645,10 @@ jobs:
       run: |
         git clone https://github.com/nih-at/libzip libzip
         git -C libzip checkout v1.9.2
+    - name: Setup CMake 3
+      uses: jwlawson/actions-setup-cmake@v2
+      with:
+        cmake-version: '3.x'
     - name: Build libzip
       run: |
         cmake libzip -B libzip-build -DBUILD_TOOLS=OFF -DBUILD_REGRESS=OFF -DBUILD_EXAMPLES=OFF -DBUILD_DOC=OFF -DENABLE_BZIP2=OFF -DENABLE_LZMA=OFF -DENABLE_ZSTD=OFF -DENABLE_COMMONCRYPTO=OFF -DENABLE_GNUTLS=OFF -DENABLE_MBEDTLS=OFF -DENABLE_OPENSSL=OFF -DENABLE_WINDOWS_CRYPTO=OFF -DENABLE_FDOPEN=OFF
