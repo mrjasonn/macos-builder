@@ -123,11 +123,14 @@ jobs:
       if: ${{ steps.cache.outputs.cache-hit != 'true' && matrix.deps != '' }}
       run: ${{ matrix.deps }}
     - name: Checkout angle builder
+      if: steps.cache.outputs.cache-hit != 'true'
       uses: actions/checkout@v4
       with:
         repository: mrjasonn/angle-builder
     - name: Install angle-builder
-      run: pip install .
+      if: steps.cache.outputs.cache-hit != 'true'
+      run: |
+        pip install .
     - name: Build angle
       if: steps.cache.outputs.cache-hit != 'true'
       shell: pwsh
@@ -269,5 +272,6 @@ jobs:
       with:
         name: mcpelauncher-${{ matrix.OS }}-${{ matrix.version }}-${{ matrix.arch }}-tar
         path: mcpelauncher.tar.xz
+
 
 
