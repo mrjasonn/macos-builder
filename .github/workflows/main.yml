@@ -670,8 +670,8 @@ jobs:
         mkdir -p base-app/Contents/Frameworks/
         lipo -create m1-artifacts/lib/libssl.dylib base-app/Contents/Frameworks/libssl.dylib -output base-app/Contents/Frameworks/libssl.dylib
         lipo -create m1-artifacts/lib/libcrypto.dylib base-app/Contents/Frameworks/libcrypto.dylib -output base-app/Contents/Frameworks/libcrypto.dylib
-        lipo -create m1-artifacts/libEGL.dylib base-app/Contents/Frameworks/libEGL.dylib -output base-app/Contents/Frameworks/libEGL.dylib
-        lipo -create m1-artifacts/libGLESv2.dylib base-app/Contents/Frameworks/libGLESv2.dylib -output base-app/Contents/Frameworks/libGLESv2.dylib
+        cp m1-artifacts/libEGL.dylib base-app/Contents/Frameworks/libEGL.dylib
+        cp m1-artifacts/libGLESv2.dylib base-app/Contents/Frameworks/libGLESv2.dylib
         mkdir -p base-app/Contents/Resources/
         cp -R m1-artifacts/share/* base-app/Contents/Resources/
         mkdir -p base-app/Contents/MacOS/
