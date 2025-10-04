@@ -44,10 +44,6 @@ jobs:
       MACOSX_DEPLOYMENT_TARGET: ${{ matrix.version }}
       cache-name: cache-openssl-${{ matrix.OS }}-${{ matrix.version }}-${{ matrix.arch }}
     steps:
-    - name: Setup CMake 3
-      uses: jwlawson/actions-setup-cmake@v2
-      with:
-        cmake-version: '3.x'
     - name: Cache openssl
       id: cache
       uses: actions/cache@v4
@@ -185,10 +181,6 @@ jobs:
       DEBIAN_FRONTEND: noninteractive
     # container: ${{ fromJson(matrix.container) }}
     steps:
-    - name: Setup CMake 3
-      uses: jwlawson/actions-setup-cmake@v2
-      with:
-        cmake-version: '3.x'
     - uses: actions/checkout@v1
       if: ${{ startsWith(matrix.OS, 'macOS') && matrix.sdkroot != '' && !startsWith(matrix.sdkroot, '/') }}
       with:
