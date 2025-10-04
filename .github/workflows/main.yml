@@ -57,10 +57,6 @@ jobs:
   build-libcxx32:
     runs-on: macos-13
     steps:
-    - name: Setup CMake 3
-      uses: jwlawson/actions-setup-cmake@v2
-      with:
-        cmake-version: '3.x'
     - name: Select Xcode
       run: sudo xcode-select -switch /Applications/Xcode_14.2.app
     - name: Check Cache libcxx32
@@ -105,10 +101,6 @@ jobs:
       with:
         path: libcxx64-build
         key: ${{ runner.os }}-build-${{ env.cache-name }}
-    - name: Setup CMake 3
-      uses: jwlawson/actions-setup-cmake@v2
-      with:
-        cmake-version: '3.x'
     - name: Cache libcxx64
       if: steps.libcxx64-llvm.outputs.cache-hit != 'true'
       uses: actions/cache@v4
