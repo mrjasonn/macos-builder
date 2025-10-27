@@ -18,10 +18,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
-      with:
-        repository: ${{ github.repository_owner }}/macos-builder-meta
-        ref: ${{ vars.META_COMMIT }}
-        token: ${{ secrets.META_TOKEN }}
     - name: Setup Outputs
       id: out
       run: |
@@ -40,3 +36,4 @@ jobs:
       draft: ${{ github.event_name == 'workflow_dispatch' && inputs.type == 'draft' }}
       mcpelauncher-ref: ${{ needs.read-repo-files.outputs.mcpelauncher-ref || 'ng' }}
     secrets: inherit
+
