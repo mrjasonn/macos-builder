@@ -55,10 +55,10 @@ on:
         required: false
 jobs:
   build-libcxx32:
-    runs-on: macos-13
+    runs-on: macos-15-intel
     steps:
-    - name: Select Xcode
-      run: sudo xcode-select -switch /Applications/Xcode_14.2.app
+    #- name: Select Xcode
+    #  run: sudo xcode-select -switch /Applications/Xcode_14.2.app
     - name: Check Cache libcxx32
       id: libcxx32-llvm
       uses: ChristopherHX/check-cache@main
@@ -96,7 +96,7 @@ jobs:
         cmake ../llvm/llvm -DCMAKE_POLICY_VERSION_MINIMUM=3.5 -DHAVE_CXX_ATOMICS_WITHOUT_LIB=ON -DHAVE_CXX_ATOMICS64_WITHOUT_LIB=ON -DLLVM_ENABLE_PROJECTS="libcxx;libcxxabi" -DCMAKE_BUILD_TYPE=Release -DLIBCXX_BUILD_32_BITS=ON -DLIBCXXABI_BUILD_32_BITS=ON -DLLVM_BUILD_32_BITS=ON -DPYTHON_EXECUTABLE=${{ steps.setup-py.outputs.python-path }}
         make -j8 cxx cxxabi
   build-libcxx64:
-    runs-on: macos-13
+    runs-on: macos-15-intel
     steps:
     - name: Check Cache libcxx64
       id: libcxx64-llvm
@@ -135,7 +135,7 @@ jobs:
         cmake ../llvm/llvm -DCMAKE_POLICY_VERSION_MINIMUM=3.5 -DHAVE_CXX_ATOMICS_WITHOUT_LIB=ON -DHAVE_CXX_ATOMICS64_WITHOUT_LIB=ON -DLLVM_ENABLE_PROJECTS="libcxx;libcxxabi" -DCMAKE_BUILD_TYPE=Release -DPYTHON_EXECUTABLE=${{ steps.setup-py.outputs.python-path }}
         make -j8 cxx cxxabi
   build-libcxx:
-    runs-on: macos-13
+    runs-on: macos-15-intel
     needs: [build-libcxx32,build-libcxx64]
     steps:
     - name: Check libcxx
@@ -184,7 +184,7 @@ jobs:
         install_name_tool -rpath @loader_path/../lib @loader_path/../Frameworks libc++.dylib
         install_name_tool -rpath @loader_path/../lib @loader_path/../Frameworks libc++abi.dylib
   buildopenssl32:
-    runs-on: macos-13
+    runs-on: macos-15-intel
     steps:
     - name: Check for openssl
       id: cache-openssl32
@@ -233,7 +233,7 @@ jobs:
         make -j8
         sudo make install_sw -j8
   buildopenssl64:
-    runs-on: macos-13
+    runs-on: macos-15-intel
     steps:
     - name: Check for openssl
       id: cache-openssl64
@@ -282,7 +282,7 @@ jobs:
         make -j8
         sudo make install_sw -j8
   buildopenssl:
-    runs-on: macos-13
+    runs-on: macos-15-intel
     needs: [buildopenssl32, buildopenssl64]
     steps:
     - name: Check openssl
@@ -327,7 +327,7 @@ jobs:
         install_name_tool -id @rpath/libssl.dylib -add_rpath @loader_path/../Frameworks libssl.dylib
         install_name_tool -id @rpath/libcrypto.dylib -add_rpath @loader_path/../Frameworks libcrypto.dylib
   buildangle:
-    runs-on: macos-13
+    runs-on: macos-15-intel
     # needs: [buildangle32, buildangle64]
     steps:
     - name: Check angle
@@ -373,10 +373,10 @@ jobs:
         lipo -remove arm64 ./source/osx-angle-ci/artifacts/libGLESv2.dylib -output ./source/osx-angle-ci/artifacts/libGLESv2.dylib
       if: steps.angle.outputs.cache-hit != 'true'
   build-protobuf:
-    runs-on: macos-13
+    runs-on: macos-15-intel
     steps:
-    - name: Select Xcode
-      run: sudo xcode-select -switch /Applications/Xcode_14.2.app
+    #- name: Select Xcode
+    #  run: sudo xcode-select -switch /Applications/Xcode_14.2.app
     - uses: actions/cache/restore@v4
       id: cache
       with:
@@ -437,7 +437,7 @@ jobs:
       mcpelauncher-manifest-ref: ${{ inputs.mcpelauncher-ref }}
       submodule-refs: ${{ inputs.submodule-refs }}
   build:
-    runs-on: macos-13
+    runs-on: macos-15-intel
     if: "!(cancelled() || failure())"
     needs: [build-libcxx, buildopenssl, buildangle, build-protobuf, build-m1]
     permissions:
@@ -475,8 +475,8 @@ jobs:
     env:
       CMAKE_OSX_ARCHITECTURES: x86_64 # Is this needed? archive member: libglfw3.a(cocoa_init.m.o) cputype (16777223) does not match previous archive members cputype (7) (all members must match)
     steps:
-    - name: Select Xcode
-      run: sudo xcode-select -switch /Applications/Xcode_14.2.app
+    #- name: Select Xcode
+    #  run: sudo xcode-select -switch /Applications/Xcode_14.2.app
     - name: Setup Vars
       id: setup-vars
       uses: actions/github-script@v7
@@ -702,7 +702,7 @@ jobs:
         name: dmg-${{ matrix.target }}
         path: dist
   publish:
-    runs-on: macos-13
+    runs-on: macos-15-intel
     needs: build
     # Eventually extend this job to be able to run on other repositories, otherwise replace the owner and repository name in this job
     if: ${{ !cancelled() && inputs.publish }}
