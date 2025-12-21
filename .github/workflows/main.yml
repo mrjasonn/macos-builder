@@ -223,6 +223,11 @@ jobs:
       run: |
         echo MACOSX_DEPLOYMENT_TARGET=10.10.0 > $GITHUB_ENV
         echo SDKROOT=${{ github.workspace }}/${{ secrets.MacOSX1014sdk && 'MacOSX10.14.sdk' || '../MacOSX-SDKs/MacOSX10.13.sdk' }} >> $GITHUB_ENV
+    - name: Prepare Legacy sdk
+      if: steps.cache-openssl32.outputs.cache-hit != 'true'
+      run: |
+        cd "$SDKROOT/usr/include"
+        ln -s "$(xcrun --sdk macosx --show-sdk-path)/usr/include/c++" c++
     - name: Build OpenSSL
       if: steps.cache-openssl32.outputs.cache-hit != 'true'
       run: |
@@ -272,7 +277,11 @@ jobs:
       run: |
         echo MACOSX_DEPLOYMENT_TARGET=10.10.0 > $GITHUB_ENV
         echo SDKROOT=${{ github.workspace }}/${{ secrets.MacOSX1014sdk && 'MacOSX10.14.sdk' || '../MacOSX-SDKs/MacOSX10.13.sdk' }} >> $GITHUB_ENV
-    
+    - name: Prepare Legacy sdk
+      if: steps.cache-openssl64.outputs.cache-hit != 'true'
+      run: |
+        cd "$SDKROOT/usr/include"
+        ln -s "$(xcrun --sdk macosx --show-sdk-path)/usr/include/c++" c++
     - name: Build OpenSSL
       if: steps.cache-openssl64.outputs.cache-hit != 'true'
       run: |
@@ -404,6 +413,11 @@ jobs:
       run: |
         echo MACOSX_DEPLOYMENT_TARGET=10.10.0 > $GITHUB_ENV
         echo SDKROOT=${{ github.workspace }}/${{ secrets.MacOSX1014sdk && 'MacOSX10.14.sdk' || '../MacOSX-SDKs/MacOSX10.13.sdk' }} >> $GITHUB_ENV
+    - name: Prepare Legacy sdk
+      if: steps.cache.outputs.cache-hit != 'true'
+      run: |
+        cd "$SDKROOT/usr/include"
+        ln -s "$(xcrun --sdk macosx --show-sdk-path)/usr/include/c++" c++
     - name: Install brew dependencies
       if: steps.cache.outputs.cache-hit != 'true'
       run: |
@@ -653,6 +667,10 @@ jobs:
       run: |
         echo MACOSX_DEPLOYMENT_TARGET=${{ matrix.target }} > $GITHUB_ENV
         echo SDKROOT=${{ github.workspace }}/${{ secrets.MacOSX1014sdk && 'MacOSX10.14.sdk' || '../MacOSX-SDKs/MacOSX10.13.sdk' }} >> $GITHUB_ENV
+    - name: Prepare Legacy sdk
+      run: |
+        cd "$SDKROOT/usr/include"
+        ln -s "$(xcrun --sdk macosx --show-sdk-path)/usr/include/c++" c++
     - name: Get Source libzip
       run: |
         git clone https://github.com/nih-at/libzip libzip
@@ -662,8 +680,8 @@ jobs:
         cmake libzip -B libzip-build -DCMAKE_POLICY_VERSION_MINIMUM=3.5 -DBUILD_TOOLS=OFF -DBUILD_REGRESS=OFF -DBUILD_EXAMPLES=OFF -DBUILD_DOC=OFF -DENABLE_BZIP2=OFF -DENABLE_LZMA=OFF -DENABLE_ZSTD=OFF -DENABLE_COMMONCRYPTO=OFF -DENABLE_GNUTLS=OFF -DENABLE_MBEDTLS=OFF -DENABLE_OPENSSL=OFF -DENABLE_WINDOWS_CRYPTO=OFF -DENABLE_FDOPEN=OFF
         cmake --build libzip-build --parallel
         sudo cmake --build libzip-build --target install --parallel
-    - name: Install python dependencies
-      run: pip3 install jinja2 ds_store
+    - name: Install python dependencies # This is a throw away VM
+      run: pip3 install --break-system-packages jinja2 ds_store
     
     - name: add deps to base app
       run: |
